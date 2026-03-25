@@ -1,0 +1,83 @@
+<odoo>
+    <record id="view_partner_form_inherit_contact_roles" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.contact.roles</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='contact_addresses']/field[@name='child_ids']" position="attributes">
+                <attribute name="context">{'default_parent_id': id, 'default_type': is_company and 'contact' or 'other', 'contact_roles_force_delivery_company': True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='function'][not(ancestor::field[@name='child_ids'])]" position="after">
+                <field name="contact_role_ids" widget="many2many_tags" invisible="not parent_id"/>
+            </xpath>
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="buying_central_id" invisible="parent_id"/>
+            </xpath>
+            <xpath expr="//form/sheet/notebook/page[@name='contact_addresses']/field[@name='child_ids']/form/sheet/div[1]/div[1]/div[1]" position="inside">
+                <div invisible="is_company or type != 'contact'">
+                    <field name="contact_role_ids" widget="many2many_tags" string="Contact Roles"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_partner_buying_central_tree" model="ir.ui.view">
+        <field name="name">partner.buying.central.tree</field>
+        <field name="model">partner.buying.central</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_partner_buying_central_form" model="ir.ui.view">
+        <field name="name">partner.buying.central.form</field>
+        <field name="model">partner.buying.central</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_partner_buying_central" model="ir.actions.act_window">
+        <field name="name">Buying Centrals</field>
+        <field name="res_model">partner.buying.central</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_partner_buying_central" name="Buying Centrals" parent="contacts.res_partner_menu_config" action="action_partner_buying_central" sequence="30"/>
+
+    <record id="view_partner_contact_role_tree" model="ir.ui.view">
+        <field name="name">partner.contact.role.tree</field>
+        <field name="model">partner.contact.role</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_partner_contact_role_form" model="ir.ui.view">
+        <field name="name">partner.contact.role.form</field>
+        <field name="model">partner.contact.role</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_partner_contact_role" model="ir.actions.act_window">
+        <field name="name">Contact Roles</field>
+        <field name="res_model">partner.contact.role</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_partner_contact_role" name="Contact Roles" parent="contacts.res_partner_menu_config" action="action_partner_contact_role" sequence="40"/>
+</odoo>
